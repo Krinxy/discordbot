@@ -5,6 +5,10 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "mois-d-zois"
 version = "0.1.0"
+description = "Discord bot that runs a movie recommendation platform: community tickets, IMDb deduplication, RSS, music and an admin dashboard."
+readme = "README.md"
+license = {text = "MIT"}
+keywords = ["discord", "discord-bot", "discord-py", "movie-recommendations", "self-hosted"]
 requires-python = ">=3.11"
 dependencies = [
     "discord.py>=2.7",
