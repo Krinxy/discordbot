@@ -1,6 +1,8 @@
 # discordbot
 
-"Mois D Zois" — a Discord bot for channel watching, RSS feeds (YouTube uploads, news), music playback (YouTube via yt-dlp + FFmpeg), and a reaction-driven ticket workflow.
+"Mois D Zois" — a Discord bot that is, at its core, a **movie recommendation platform inside Discord**. People post film recommendations as tickets in a channel, the community looks at them together, and a reaction-driven workflow (open, in progress, closed, archived) tracks what has been recommended, discussed and handled. IMDb is only used to avoid duplicates: a recommended title is matched against IMDb so the same film does not end up in the collection twice. It is not a movie database or an IMDb client.
+
+Around that sit the supporting features: channel watching, RSS feeds (YouTube uploads, news), music playback (YouTube via yt-dlp + FFmpeg), free-game and Twitch announcements, webhooks and an admin dashboard.
 
 ## What's essential to run it
 
@@ -96,7 +98,7 @@ returns the row plus a one-time `secret` and the full webhook URL (`/webhook/son
 
 ## IMDb blacklist
 
-`services/media_requests/imdb/` matches ticket content against IMDb before a title is confirmed (see "Watchlist export" below for what happens after). Two independent blacklist dimensions in `config/config.yaml`'s `tickets.blacklist`, both empty (no blocking) by default:
+`services/media_requests/imdb/` matches ticket content against IMDb before a title is confirmed, purely to deduplicate recommendations (see "Watchlist export" below for what happens after). Two independent blacklist dimensions in `config/config.yaml`'s `tickets.blacklist`, both empty (no blocking) by default:
 
 ```yaml
 tickets:
