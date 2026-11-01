@@ -1,0 +1,80 @@
+services:
+  traefik:
+    image: traefik:v3
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - edge
+    restart: unless-stopped
+    mem_limit: 128m
+    cpus: 0.5
+
+  bot:
+    build:
+      context: ../..
+      dockerfile: config/deploy/Dockerfile
+    volumes:
+      - ../../config:/app/config
+    networks:
+      - edge
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bot-admin.rule=PathPrefix(`/admin`)"
+      - "traefik.http.routers.bot-admin.entrypoints=web"
+      - "traefik.http.routers.bot-admin.service=bot-admin"
+      - "traefik.http.routers.bot-admin.middlewares=bot-admin-stripprefix"
+      - "traefik.http.middlewares.bot-admin-stripprefix.stripprefix.prefixes=/admin"
+      - "traefik.http.services.bot-admin.loadbalancer.server.port=8787"
+      - "traefik.http.routers.bot-webhooks.rule=PathPrefix(`/webhook`)"
+      - "traefik.http.routers.bot-webhooks.entrypoints=web"
+      - "traefik.http.routers.bot-webhooks.service=bot-webhooks"
+      - "traefik.http.services.bot-webhooks.loadbalancer.server.port=8788"
+    mem_limit: 384m
+    cpus: 1.0
+
+  frontend:
+    build:
+      context: ../..
+      dockerfile: frontend/Dockerfile
+    environment:
+      ADMIN_API_BASE_URL: "http://bot:8787"
+      ADMIN_API_KEY: "${ADMIN_API_KEY}"
+    depends_on:
+      - bot
+    networks:
+      - edge
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.routers.frontend.priority=1"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+    mem_limit: 256m
+    cpus: 0.5
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    ports:
+      - "3001:3001"
+    volumes:
+      - kuma-data:/app/data
+    networks:
+      - edge
+    restart: unless-stopped
+    mem_limit: 256m
+    cpus: 0.5
+
+networks:
+  edge:
+    external: true
+
+volumes:
+  kuma-data:

@@ -1,0 +1,87 @@
+requests:
+  export_dir: exports
+
+admin_api:
+  # 127.0.0.1 for non-Docker local runs; set to 0.0.0.0 for docker-compose.yml (Traefik
+  # runs in a separate container and can't reach a loopback-only bind) - see README
+  host: "127.0.0.1"
+  port: 8787
+
+watch:
+  channels:
+    - channel_id: 123456789012345678
+      name: soz
+      tickets: true
+
+tickets:
+  emojis:
+    open: "<a:Working_On:123456789012345678>"
+    operation: "<a:Uploaded:123456789012345678>"
+    closed: "✅"
+    archive: "📦"
+    currently_not_possible: "❌"
+  archive_after_days: 3
+  reminder_interval_days: 7
+  check_interval_seconds: 3600
+  allowed_role_ids: [123456789012345678]
+  blacklist:
+    person_names: []
+    tags: []   # qid values to reject: movie, tvSeries, tvMovie, tvMiniSeries, video
+
+rss:
+  poll_seconds: 900
+  # rss_seen rows older than this are pruned on every poll, so the dedup log doesn't grow forever
+  retention_days: 90
+  # feeds themselves are managed via the admin frontend (/services/rss) or config/bot.db's
+  # rss_feeds table directly, not here - see README's "RSS feeds" section
+
+music:
+  # empty means nobody can use /mois music (fail closed) - add the Discord role IDs allowed to use it
+  allowed_role_ids: [123456789012345678]
+
+troll:
+  check_interval_seconds: 60
+  interval_min_seconds: 480
+  interval_max_seconds: 720
+  # local audio files (mp3/ogg/wav/m4a) dropped in config/troll_sounds/ are used as one sound pool;
+  # the guild's real Discord soundboard sounds (if any) are the other - one is picked at random per fire
+  sound_dir: troll_sounds
+
+free_games:
+  poll_seconds: 3600
+  channel_id: 0
+  # free_games_seen rows older than this are pruned on every poll, same reasoning as rss.retention_days
+  retention_days: 90
+
+twitch:
+  poll_seconds: 120
+  # login = the twitch channel's login name (lowercase, from the URL), channel_id = where to announce
+  channels: []
+  # example:
+  # channels:
+  #   - login: "somechannel"
+  #     channel_id: 123456789012345678
+
+birthdays:
+  channel_id: 0
+  check_interval_seconds: 3600
+
+webhooks:
+  # same 127.0.0.1/0.0.0.0 rule as admin_api.host above - 0.0.0.0 for docker-compose.yml
+  host: "127.0.0.1"
+  port: 8788
+
+watchlist_export:
+  # empty = feature stays disabled (fail-closed), same as an unset Twitch client id
+  target_url: ""
+
+voice_channels:
+  check_interval_seconds: 300
+  # each entry: category_id (Discord category the fixed voice channels live in), max_generic_channels (hard cap),
+  # name_pool (used in order, then cycled with a number once exhausted), max_creations_per_user (spam protection:
+  # max channels one user can trigger per check_interval_seconds)
+  categories:
+    - category_id: 123456789012345678
+      max_generic_channels: 10
+      name_pool: ["Sag mal fire auf englisch", "иди нахуй", "Eduard Kamerateam", "Ich kann das alles nicht mehr"]
+      max_creations_per_user: 10

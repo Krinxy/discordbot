@@ -1,0 +1,12 @@
+{
+  "functions": {
+    "_admin_check": {"auth_required": true},
+    "_apply_status": {"auth_required": true},
+    "logchannel": {"auth_required": true},
+    "export": {"auth_required": true},
+    "export_movies": {"auth_required": true}
+  },
+  "users": [],
+  "roles": [],
+  "cooldown_seconds": 2.0
+}

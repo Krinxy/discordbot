@@ -1,0 +1,12 @@
+{
+  "name": "mois-d-zois",
+  "private": true,
+  "packageManager": "pnpm@11.5.0",
+  "scripts": {
+    "dc:up": "docker compose -f config/deploy/docker-compose.yml --env-file config/.env up -d --build",
+    "dc:down": "docker compose -f config/deploy/docker-compose.yml --env-file config/.env down --remove-orphans",
+    "dc:restart": "docker compose -f config/deploy/docker-compose.yml --env-file config/.env restart",
+    "dc:logs": "docker compose -f config/deploy/docker-compose.yml --env-file config/.env logs -f",
+    "dc:ps": "docker compose -f config/deploy/docker-compose.yml --env-file config/.env ps"
+  }
+}
