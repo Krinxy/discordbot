@@ -1,8 +1,12 @@
 # discordbot
 
-"Mois D Zois" — a Discord bot that is, at its core, a **movie recommendation platform inside Discord**. People post film recommendations as tickets in a channel, the community looks at them together, and a reaction-driven workflow (open, in progress, closed, archived) tracks what has been recommended, discussed and handled. IMDb is only used to avoid duplicates: a recommended title is matched against IMDb so the same film does not end up in the collection twice. It is not a movie database or an IMDb client.
+"Mois D Zois" — an all-round Discord bot for a friend server, built around a few things:
 
-Around that sit the supporting features: channel watching, RSS feeds (YouTube uploads, news), music playback (YouTube via yt-dlp + FFmpeg), free-game and Twitch announcements, webhooks and an admin dashboard.
+- **Movie recommendations:** people post film recommendations as tickets in a channel and a reaction-driven workflow (open, in progress, closed, archived) tracks them. Titles are matched against IMDb to catch duplicates and to feed the ranking of what gets recommended most. It is not a movie database or an IMDb client.
+- **Generic voice channels:** keeps exactly one empty overflow channel available per configured category and creates and removes them as people join and leave.
+- **Music:** YouTube playback via yt-dlp + FFmpeg, with queue and volume controls.
+- **Troll mode:** an opt-in "annoyance mode" that randomly joins a voice channel and plays a sound while it is idle.
+- **Announcements and plumbing:** RSS feeds, free games, Twitch live alerts, birthdays, webhooks, channel logging and an admin dashboard.
 
 ## What's essential to run it
 
